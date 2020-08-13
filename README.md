@@ -1,5 +1,5 @@
 # SentX Türkçe NLP Projesi
-SentX, Türkçe Duygu Analizi sunan web uygulamasıdır. Bu proje kapsamında ilk etapta hazır bulunan bir veri kümesi yardımıyla makine öğrenimi yapılmıştır. Bu sayede ortaya bir model çıkarılmıştır. Oluşturulan model ile kullanıcılardn gelen yorumlar anlık olarak Sentiment Analizi yapılarak veritabanına kaydedilmektedir.
+SentX, Türkçe Duygu Analizi sunan web uygulamasıdır. Bu proje kapsamında ilk etapta hazır bulunan bir veri kümesi yardımıyla makine öğrenimi yapılmıştır. Bu sayede ortaya bir model çıkarılmıştır. Oluşturulan model ile kullanıcılardn gelen yorumlar anlık olarak Sentiment Analizi yapılarak veritabanına kaydedilmektedir. Sentiment analiz kodları Sentiment klasörünün altında bulunan Sentiment.py dosyasında yer almaktadır. Web framwork olarak Django kullanılmıştır.
 <br/>
 ## Platformun Kapsamı:
 Platformun ana yapısını kurumsal ve kişisel kullanıcılar oluşturmaktadır.
