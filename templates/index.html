@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+{% load crispy_forms_tags %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SentX | Login Page</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet">
+    <link href="{% static 'css/themes/lite-purple.min.css' %}" rel="stylesheet">
+</head>
+<div class="auth-layout-wrap" background-color = "primary">
+    <div class="auth-content">
+        <div class="card o-hidden">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="p-4">
+                        <div class="auth-logo text-center mb-4"><img src="{%static 'images/logosentx4.png' %}" alt=""></div>
+                        <h1 class="mb-3 text-18"><strong>Giriş Yap</strong></h1>
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                            {{form | crispy}}
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-md btn-primary btn-block mt-3">Giriş Yap</button>
+                            </div>
+                            
+                        </form>
+
+                        {% if messages %}
+                        {% for message in messages %}
+                        
+                        <div {% if message.tags %} class="{{ message.tags }} alert alert-danger" role="alert"{% endif %}>
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+            
+                        {% endif %}
+
+                        
+                        
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+                    
+                    <div class="pr-3 auth-right">
+                        <h1 class="mb-3 text-18"><strong>Kayıt Ol</strong></h1>
+                        <a class="btn btn-info btn-block btn-icon-text" href="{% url 'user:ent_register'%}"><i class="i-Business-ManWoman"></i> Kurumsal Kullanıcı Olarak Kayıt Ol</a>
+                        <a class="btn btn-danger btn-block btn-icon-text" href="{% url 'user:per_register'%}"><i class="i-MaleFemale"></i> Bireysel Kullanıcı Olarak Kayıt Ol</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

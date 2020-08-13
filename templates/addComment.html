@@ -1,0 +1,85 @@
+{% include "per_users_layout.html" %}
+
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column"> 
+  <!-- ============ Body content start ============= -->
+  <div class="main-content">
+    <div class="breadcrumb">
+      <div class="d-flex w-100 justify-content-between">
+        <h1 class="mr-2"><strong>{{title.title_name}}</strong></h1>
+        <small class="mt-0 text-black"><span class="badge badge-pill badge-primary m-2">{{ title.created_date|date:"d.m.Y" }} Tarihinde Oluşturulmuştur</span></small>
+      </div>
+      
+    </div>
+    <div class="separator-breadcrumb border-top"></div>
+    <div class="row">
+      <div class="col-lg-12"> 
+        <div class="card card-profile-1 mb-4">
+          <div class="card-body text-center">
+              <div class="avatar box-shadow-2 mb-3"><img src="{{title.author.enterpriseuserprofile.profile_photo.url}}" alt="" /></div>
+              <h5 class="m-0"><a href="{% url 'title:detail' title.id %}" class="mt-0"><strong>{{title.title_name}}</strong></a></h5>
+              <p class="m-2" style="text-transform:uppercase">{{title.author.username}}</p>
+        
+              Yapılan Yorum Sayısı: <b>{{total_comment}}</b><br>
+              Yapılacak En Fazla Yorum Sayısı : <b>{{deneme}}</b><br>
+              Bu Başlıktaki Yorum Sayınız: 
+              {% if comment_control %}
+              <b>{{comment_control}}</b>
+              {% else %}
+              <b>0</b>
+              {% endif %}
+          </div>
+          
+              <div class="card m-5">
+              <h5 class="card-header"><strong>Düşüncelerinizi Belirtin</strong></h5>
+              <div class="card-body">
+                <form method = "post" action = "{% url 'title:addcomment' title.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <small class="text-muted">* Bir Başlığa <strong>En Fazla Bir Adet Yorum Yapabilirsin.</strong></small><br>
+                  <label for="formGroupExampleInput">Düşüncelerinizi Bu Alana Giriniz:</label>
+                  <textarea name = "comment_content" class="form-control" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3 float-right">Düşüncemi Ekle</button>
+                {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            </form>  
+          </div>
+        </div>
+          </div>
+        </div>
+    
+        
+        
+      </div>
+    
+  </div><!-- end of main-content -->
+  
+  
+  <!-- Footer Start -->
+  <div class="flex-grow-1"></div>
+  <div class="app-footer">
+    <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+      <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+      <span class="flex-grow-1"></span>
+      <div class="d-flex align-items-center">
+        <div>
+          <p class="m-0">Telif Hakkı &copy; 2020 <strong>SentX</strong></p>
+        </div>
+      </div>
+    </div>
+  </div><!-- fotter end -->
+</div>
+{% endblock body %}

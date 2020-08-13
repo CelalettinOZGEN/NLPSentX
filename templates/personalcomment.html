@@ -1,0 +1,108 @@
+{% include "per_users_layout.html" %}
+
+{% load static %}
+{% block body %}
+
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+    <!-- ============ Body content start ============= -->
+    <div class="main-content">
+        <div class="breadcrumb">
+            <h1 class="mr-2">Yorumlarım</h1>
+        </div>
+        <div class="separator-breadcrumb border-top"></div>
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div class="card text-left">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {% if comments%} <!--titles gönderilmişse ve title ım varsa-->
+                            <table class="table table-borderless" >
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Başlık</th>
+                                        <th scope="col">Oluşturan</th>
+                                        <th scope="col">Yapılan Yorum</th> 
+                                        <th scope="col" style="text-align:center">Duygu Analizi</th>
+                                        <th scope="col" style="text-align:center">Tarih</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for comment in comments%}
+                                    <tr>
+                                        <!--<th scope="row">{{title.id}}</th>-->
+                                        <td><a href="{% url 'title:detail' comment.title.id %}"><strong>{{comment.title.title_name}}</strong></a></td>
+                                        <td>{{comment.title.author.username}}</td>
+                                        <td>{{comment.comment_content}} </td>
+                                        
+                                        <td style="text-align:center">
+                                            {% if comment.sentiment == "Pozitif" %}
+                                                <span class="badge badge-success">{{comment.sentiment}}</span>
+                                            {% elif comment.sentiment == "Negatif" %}
+                                                <span class="badge badge-danger">{{comment.sentiment}}</span>
+                                            {% elif comment.sentiment == "Nötr" %}
+                                                <span class="badge badge-warning">{{comment.sentiment}}</span>
+                                            {% endif %}
+                                            
+                                        </td>
+                                        
+                                        <td style="text-align:center" class="text-small text-light">{{comment.comment_date|date:"d.m.Y"}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination justify-content-center">
+                                {% if comments.has_previous %}
+                                <a class="page-link" href="?page={{ comments.previous_page_number}}" >
+                                  <i>«</i>
+                                </a>
+                                {% endif %}
+                        
+                                {% for num in comments.paginator.page_range %}
+                                  {% if comments.number == num %} 
+                                  <li class="page-item active"><span class="page-link">{{num}}</span></li>
+                                  {% else%}
+                                    <a class="page-link" href="?page={{ num }}">{{num}}</a>
+                                  {% endif %}
+                                {% endfor %}
+                                {% if comments.has_next %}
+                                  <a class="page-link" href="?page={{ comments.next_page_number}}">
+                                    <i >»</i>
+                                  </a>
+                                {% endif %}
+                              </div>
+
+                            {% else %}
+                            <div class="col-md-12">
+                                <div class="alert alert-card alert-danger" role="alert">
+                                    <strong class="text-capitalize">Uyarı!</strong> Henüz Yorumunuz Bulunmamaktadır.
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            
+    </div><!-- end of main-content -->
+    
+
+
+    <!-- Footer Start -->
+    <div class="flex-grow-1"></div>
+    <div class="app-footer">
+        <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">  
+            <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+            <span class="flex-grow-1"></span>
+            <div class="d-flex align-items-center">
+                <div>
+                    <p class="m-0">Telif Hakkı &copy; 2020 <strong>SentX</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- fotter end -->
+    </div>
+{% endblock body %}

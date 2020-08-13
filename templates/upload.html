@@ -1,0 +1,51 @@
+{% include "users_layout.html" %}
+
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+    <!-- ============ Body content start ============= -->
+    <div class="main-content">
+        <div class="breadcrumb">
+            <h1 class="mr-2">İçe Aktar</h1>
+        </div>
+        <div class="separator-breadcrumb border-top"></div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card text-left">
+                    <div class="card-body">
+                        <h4 class="card-title">Dosya İçe Aktar</h4>
+                        <div class="text-muted"><strong>Not:</strong> Lütfen Algoritmayı Öğreteceğiniz .csv Dosyasını Seçin</div>
+                        <form class="dropzone dropzone-area" id="file-accepted-upload" action="#">
+                            <div class="fallback">
+                                <input name="file" type="file" multiple="multiple" />
+                            </div>
+                        </form>
+                        <button class="btn btn-primary mt-3 float-right" type="submit" >Dosyayı Yükle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end of main-content -->
+
+    <!-- Footer Start -->
+    <div class="flex-grow-1"></div>
+    <div class="app-footer">
+        <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+            <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+            <span class="flex-grow-1"></span>
+            <div class="d-flex align-items-center">
+                <div>
+                    <p class="m-0">Telif Hakkı &copy; 2020 <strong>SentX</strong></p>
+                </div>
+            </div>
+        </div>
+    </div><!-- fotter end -->
+</div>
+{% endblock body %}

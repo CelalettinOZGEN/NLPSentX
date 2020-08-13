@@ -1,0 +1,84 @@
+{% include "per_users_layout.html" %}
+
+
+{% load static %}
+
+{% block body %}
+
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+  <!-- ============ Body content start ============= -->
+  <div class="main-content">
+    <div class="breadcrumb">
+      <h1 class="mr-2">Yeni Açılan Başlıklar</h1> 
+    </div>
+    <div class="separator-breadcrumb border-top"></div>
+    {% if messages %}
+    {% for message in messages %}
+    
+    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+      <strong class="text-capitalize">Tebrikler!</strong> {{title.title_name}} {{ message }}
+      </div>
+    {% endfor %}
+
+    {% endif %}
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="row">
+      {% if titles %}
+      {% for title in titles%}    
+        <div class="col-xl-4">
+          <div class="col-md-12">
+            <div class="card card-profile-1 mb-4">
+              <div class="card-body text-center">
+                  <div class="avatar box-shadow-2 mb-3"><img src="{{title.author.enterpriseuserprofile.profile_photo.url}}" alt="" /></div>
+                  <h5 class="m-0"><a href="{% url 'title:detail' title.id %}" class="mt-0"><strong>{{title.title_name}}</strong></a></h5>
+                  <p class="m-0">{{title.author.username}}</p>
+                 
+                  <p class="mt-0"><span class="text-mute"><i class="i-Calendar-4 mr-2"></i>{{title.created_date|date:"d.m.Y"}}</span></p>
+            
+                  <p><i class="i-Speach-Bubble-6 mr-1"></i><strong>{{title.get_comment_count}}</strong></span></p>
+                      
+                  <a href="{% url 'title:detailcomment' title.id %}" class="btn btn-primary btn-rounded m-0">Yorum Yap</a>
+              </div>
+            </div> 
+          </div>
+        </div>   
+      {% endfor %}
+    </div>
+
+    <div class="row">
+      {% else %}
+      <div class="alert alert-danger">Henüz Bir Başlık Bulunmamaktadır.</div>
+      {% endif %}
+    </div>
+  </div><!-- end of main-content -->
+
+
+
+
+
+
+  <!-- Footer Start -->
+  <div class="flex-grow-1"></div>
+  <div class="app-footer">
+    <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+      <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+      <span class="flex-grow-1"></span>
+      <div class="d-flex align-items-center">
+        <div>
+          <p class="m-0">Telif Hakkı &copy; 2020 <strong>SentX</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- fotter end -->
+</div>
+{% endblock body %}
+
+

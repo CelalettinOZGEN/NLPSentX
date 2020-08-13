@@ -1,0 +1,173 @@
+{% include "users_layout.html" %}
+{% load static %}
+{% block body %}
+
+
+      <!-- =============== Left side End ================-->
+    <div class="main-content-wrap sidenav-open d-flex flex-column">
+        <!-- ============ Body content start ============= -->
+        <div class="main-content">
+            <div class="breadcrumb">
+                <h1 class="mr-2">Kurumsal Kullanıcı Dashboard</h1> 
+            </div>
+            <div class="separator-breadcrumb border-top"></div>
+            {% if messages %}
+            {% for message in messages %}
+            
+            <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+              <strong class="text-capitalize">Tebrikler!</strong> {{ message }}
+              <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+            {% endfor %}
+
+          {% endif %}
+
+        <!--
+          {% if titles %}
+          {% for title in titles %}
+              <p>{{title.title_name}}</p>
+          {% endfor %}
+          {% endif %}
+        -->
+        <div class="row">
+            {% if titles %}
+            <!--
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                    <div class="card-body text-center"><i class="i-Add-User"></i>
+                        <div class="content">
+                            <p class="text-muted mt-2 mb-0">New Leads</p>
+                            <p class="text-primary text-24 line-height-1 mb-2">205</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+            {% for title in titles %}
+            <div class="col-xl-4">
+                
+                  <div class="card card-chart-bottom o-hidden mb-4">
+                    <div class="card-body">
+                        <div class="text-muted text-18"><a href="{% url 'title:report' title.id %}" class="mt-0"><strong>{{title.title_name}}</strong></a></div> 
+                        <small class="text-muted">{{ title.created_date|date:"d.m.Y" }}</small>
+
+                        <div class="ul-widget-card__rate-icon mt-2">
+                            <span>
+                                <i class="i-Speach-Bubble-3 mr-2"></i>
+                                <strong>{{title.get_comment_count}}</strong> /
+                                <text class="text-12">
+                                    {{title.title_bound}}
+                                </text>
+                                
+                            </span>
+                            <span>
+
+                                
+                                {% if title.sentimenttotalsystem.positive_count %}
+                                    <span class="badge badge-round-success pill m-1 text-dark">{{title.sentimenttotalsystem.positive_count}}</span>
+                                {% else %}
+                                    <span class="badge badge-round-success pill m-1 text-dark">0</span>
+                                {% endif %}
+                       
+                                {% if title.sentimenttotalsystem.negative_count %}
+                                    <span class="badge badge-round-danger pill m-1 text-dark">{{title.sentimenttotalsystem.negative_count}}</span>
+                                {% else %}
+                                    <span class="badge badge-round-danger pill m-1 text-dark">0</span>
+                                {% endif %}
+
+                                {% if title.sentimenttotalsystem.notr_count %}
+                                    <span class="badge badge-round-warning pill m-1 text-dark">{{title.sentimenttotalsystem.notr_count}}</span>
+                                {% else %}
+                                    <span class="badge badge-round-warning pill m-1 text-dark">0</span>
+                                {% endif %}
+                                
+                            </span>
+                        </div>
+                        <div class="mt-0">
+                            {% if title.sentimenttotalsystem.positive_count > title.sentimenttotalsystem.negative_count and title.sentimenttotalsystem.positive_count > title.sentimenttotalsystem.notr_count %}
+                                <small class="text-muted">* Ağırlıklı Olarak <strong class="text-success">POZİTİF</strong> Yorumlar Aldınız.</small>
+                            {% elif title.sentimenttotalsystem.positive_count == title.sentimenttotalsystem.negative_count and title.sentimenttotalsystem.positive_count > 0 and title.sentimenttotalsystem.negative_count > 0 %}
+                                <small class="text-muted">* <strong class="text-success">POZİTİF</strong> ve <strong class="text-danger">NEGATİF</strong>  Yorumlar Eşit Dağılım Göstermiş.</small>
+                            {% elif title.sentimenttotalsystem.positive_count == title.sentimenttotalsystem.notr_count and title.sentimenttotalsystem.positive_count > 0 and title.sentimenttotalsystem.notr_count > 0 %}
+                                <small class="text-muted">* <strong class="text-success">POZİTİF</strong> ve <strong class="text-warning">NÖTR</strong>  Yorumlar Eşit Dağılım Göstermiş.</small>
+                            {% elif title.sentimenttotalsystem.negative_count > title.sentimenttotalsystem.positive_count  and title.sentimenttotalsystem.negative_count > title.sentimenttotalsystem.notr_count %}
+                                <small class="text-muted">* Ağırlıklı Olarak <strong class="text-danger">NEGATİF</strong> Yorumlar Aldınız.</small>
+                            {% elif title.sentimenttotalsystem.negative_count == title.sentimenttotalsystem.notr_count and title.sentimenttotalsystem.negative_count > 0 and title.sentimenttotalsystem.notr_count > 0 %}
+                                <small class="text-muted">* <strong class="text-danger">NEGATİF</strong> ve <strong class="text-warning">NÖTR</strong>  Yorumlar Eşit Dağılım Göstermiş.</small>
+                            {% elif title.sentimenttotalsystem.notr_count > title.sentimenttotalsystem.positive_count  and title.sentimenttotalsystem.notr_count > title.sentimenttotalsystem.negative_count %}
+                                <small class="text-muted">* Ağırlıklı Olarak <strong class="text-warning">NÖTR</strong> Yorumlar Aldınız.</small>
+                            {% else %}
+                                <small class="text-muted">* Başlığınıza Henüz <strong class="text-dark">Yorum Yapılmamıştır.</strong></small>
+                            {% endif %}
+                        </div>
+
+                        <div class="progress mt-1">
+                            {% if title.sentimenttotalsystem.positive_count > title.sentimenttotalsystem.negative_count and title.sentimenttotalsystem.positive_count > title.sentimenttotalsystem.notr_count %}
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            
+                            {% elif title.sentimenttotalsystem.positive_count == title.sentimenttotalsystem.negative_count and title.sentimenttotalsystem.positive_count > 0 and title.sentimenttotalsystem.negative_count > 0 %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            
+                            {% elif title.sentimenttotalsystem.positive_count == title.sentimenttotalsystem.notr_count and title.sentimenttotalsystem.positive_count > 0 and title.sentimenttotalsystem.notr_count > 0 %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+
+
+                            {% elif title.sentimenttotalsystem.negative_count > title.sentimenttotalsystem.positive_count  and title.sentimenttotalsystem.negative_count > title.sentimenttotalsystem.notr_count %}
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                
+                            {% elif title.sentimenttotalsystem.negative_count == title.sentimenttotalsystem.notr_count and title.sentimenttotalsystem.negative_count > 0 and title.sentimenttotalsystem.notr_count > 0 %}
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            
+                                
+                            {% elif title.sentimenttotalsystem.notr_count > title.sentimenttotalsystem.positive_count  and title.sentimenttotalsystem.notr_count > title.sentimenttotalsystem.negative_count %}
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            
+                            {% else %}
+                            <div class="progress-bar bg-light text-dark" role="progressbar" style="width: 90%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">Henüz Yorum Yok</div>
+                            {% endif %}
+                        
+                        </div>
+
+                    </div>
+                  </div> 
+              </div> 
+              {% endfor %}
+        </div>
+        <br>
+        
+        <div class="row">
+            
+        </div>
+
+        
+        
+        <div class="row">
+            {% else %}
+            <div class="alert alert-danger">Henüz Bir Başlığınız Bulunmamaktadır.</div>
+            {% endif %}
+        </div>
+            
+    </div><!-- end of main-content -->
+        
+        <!-- Footer Start -->
+        <div class="flex-grow-1"></div>
+        <div class="app-footer">
+            <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+                <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+                <span class="flex-grow-1"></span>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="m-0">Telif Hakkı &copy; 2020 <strong>SentX</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- fotter end -->
+    </div>
+
+
+
+{% endblock body %}

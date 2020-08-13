@@ -1,0 +1,99 @@
+
+<html>
+    
+    <body>
+
+        {% block body %}
+        <p align="right">{% now "d.m.Y H:i"%}</p>
+        <div id="header_content">
+            <h1 align="center">{{title.title_name}}</h1>
+            
+        </div>
+    
+
+        <div>
+            <h3 align="center"> {{title.title_name}} başlığına toplam {{total_comment}} adet yorum yapılmıştır.</h3>
+            <h3 align="center">Pozitif: {{positive}} | Negatif: {{negative}} | Notr: {{notr}} </h3>
+        </div>
+        <br><br>
+        <h3 align="center">Raporlar</h4>
+        {% if comments %}
+        * 
+        {% for comment in comments%}
+            {% if comment.comment_author.personalawardsystem.is_gold == True %}
+                <strong>{{comment.comment_author}} </strong>,
+            {% endif %}
+        {% endfor %}
+        kullanıcıları <strong>Gold Kullanıcıdır</strong>. Sadece isimlerini görebilirsiniz.
+        {% endif %} 
+        <br><br>
+        {% if title.sentimenttotalsystem.positive_count > title.sentimenttotalsystem.negative_count and title.sentimenttotalsystem.positive_count > title.sentimenttotalsystem.notr_count %}
+            * Ağırlıklı Olarak <strong>POZİTİF</strong> Yorumlar Aldınız.</small>
+        {% elif title.sentimenttotalsystem.positive_count == title.sentimenttotalsystem.negative_count and title.sentimenttotalsystem.positive_count > 0 and title.sentimenttotalsystem.negative_count > 0 %}
+            * <strong>POZİTİF</strong> ve <strong>NEGATİF</strong>  Yorumlar Eşit Dağılım Göstermiş.</small>
+        {% elif title.sentimenttotalsystem.positive_count == title.sentimenttotalsystem.notr_count and title.sentimenttotalsystem.positive_count > 0 and title.sentimenttotalsystem.notr_count > 0 %}
+            * <strong>POZİTİF</strong> ve <strong>NÖTR</strong>  Yorumlar Eşit Dağılım Göstermiş.</small>
+        {% elif title.sentimenttotalsystem.negative_count > title.sentimenttotalsystem.positive_count  and title.sentimenttotalsystem.negative_count > title.sentimenttotalsystem.notr_count %}
+            * Ağırlıklı Olarak <strong>NEGATİF</strong> Yorumlar Aldınız.</small>
+        {% elif title.sentimenttotalsystem.negative_count == title.sentimenttotalsystem.notr_count and title.sentimenttotalsystem.negative_count > 0 and title.sentimenttotalsystem.notr_count > 0 %}
+            * <strong>NEGATİF</strong> ve <strong>NÖTR</strong>  Yorumlar Eşit Dağılım Göstermiş.</small>
+        {% elif title.sentimenttotalsystem.notr_count > title.sentimenttotalsystem.positive_count  and title.sentimenttotalsystem.notr_count > title.sentimenttotalsystem.negative_count %}
+           * Ağırlıklı Olarak <strong>NÖTR</strong> Yorumlar Aldınız.</small>
+        {% else %}
+            * Başlığınıza Henüz <strong>Yorum Yapılmamıştır.</strong></small>
+        {% endif %}
+        <br><br>
+        <h3 align="center">Yapılan Yorumlar</h4>
+        
+        <div class="row"><!--3.Satır-->
+            <table>
+                <thead>
+                    <tr>
+                        <td scope="col" style="text-align:center"><b>Yorum Yapan</b></td>
+                        <td scope="col" style="text-align:center"><b>Yorum</b></td>
+                        <td scope="col" style="text-align:center"><b>Duygu Analizi</b></td>
+                    </tr>
+                    
+                </thead>
+                
+                <tbody>
+                    
+                    {% for comment in comments%}
+                    
+                    <tr class="mt-4">
+                        <td style="text-align:center">{{comment.comment_author}}</td>
+                        <td style="text-align:center">
+                            {% if comment.comment_author.personalawardsystem.is_gold == True %}
+                            ---
+                            {% else %}
+                            {{comment.comment_content}}
+                            {% endif %}
+                        </td>
+                        <td style="text-align:center">
+                            {% if comment.comment_author.personalawardsystem.is_gold == True %}
+                            ---
+                            {% else %}
+                            {{comment.sentiment}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        </div>
+        
+
+        
+
+
+        
+        
+    
+
+</body>
+</html>
+
+
+
+{% endblock body %}

@@ -1,0 +1,90 @@
+{% include "users_layout.html" %}
+
+
+{% load static %}
+
+{% block body %}
+
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+  <!-- ============ Body content start ============= -->
+  <div class="main-content">
+    <div class="breadcrumb">
+      <h1 class="mr-2">Kullanıcı Profili</h1> 
+    </div>
+    <div class="separator-breadcrumb border-top"></div>
+    <div class="col-lg-4 col-xl-12 mt-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="user-profile mb-4">
+                    <div class="ul-widget-card__user-info"><img class="profile-picture avatar-lg mb-2" src="{{user.enterpriseuserprofile.profile_photo.url}}" alt="" />
+                        <p class="m-0 text-24">{{user.username}}</p>
+                        <p class="text-muted m-0">{{user.enterpriseuserprofile.sector}}</p>
+                    </div>
+                </div>
+                <div class="ul-widget-card--line mt-2">
+                      <hr />
+                                
+                                <div class="row ml-5">
+                                    <div class="col-md-4 col-6">
+                                        <div class="mb-4">
+                                            <p class="text-primary mb-1"><i class="i-Calendar text-16 mr-1"></i> Kurum Adı</p><span>{{user.username}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-6">
+                                      <div class="mb-4">
+                                        <p class="text-primary mb-1"><i class="i-Shop text-16 mr-1"></i> Sektör</p><span style="text-transform:uppercase">{{user.enterpriseuserprofile.sector}}</span>
+                                      </div>  
+                                    </div>
+
+                                    <div class="col-md-4 col-6">
+                                      <div class="mb-4">
+                                        <p class="text-primary mb-1"><i class="i-Email text-16 mr-1"></i> E-posta</p><span>{{user.email}}</span>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 col-6">
+                                      <div class="mb-4">
+                                        <p class="text-primary mb-1"><i class="i-Globe text-16 mr-1"></i> Bölge</p><span>Türkiye</span>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 col-6">
+                                      <div class="mb-4">
+                                        <p class="text-primary mb-1"><i class="i-ID-Card text-16 mr-1"></i> Kayıt Tarihi</p><span>{{user.date_joined|date:"d.m.Y"}}</span>
+                                      </div>
+                                    </div>
+                                </div>
+                               
+                    </div>
+                  
+                  
+                    <span><i class="i-Recycling-2 text-info mt-3"></i> <strong>Son Giriş:</strong> {{user.last_login|date:"d.m.Y H:i"}}</span> 
+            </div>
+        </div>
+    </div>
+    
+  </div><!-- end of main-content -->
+
+
+
+
+
+
+  <!-- Footer Start -->
+  <div class="flex-grow-1"></div>
+  <div class="app-footer">
+    <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+      <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+      <span class="flex-grow-1"></span>
+      <div class="d-flex align-items-center">
+        <div>
+          <p class="m-0">&copy; 2020 SentX</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- fotter end -->
+</div>
+{% endblock body %}
+
+

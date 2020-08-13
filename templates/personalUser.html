@@ -1,0 +1,153 @@
+{% include "per_users_layout.html" %}
+
+
+{% load static %}
+
+{% block body %}
+
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+  <!-- ============ Body content start ============= -->
+  <div class="main-content">
+    <div class="breadcrumb">
+      <h1 class="mr-2">Kullanıcı Profilim</h1> 
+    </div>
+    <div class="separator-breadcrumb border-top"></div>
+    <div class="col-lg-4 col-xl-12 mt-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="user-profile mb-4">
+                    <div class="ul-widget-card__user-info"><img class="profile-picture avatar-lg mb-2" src="{{user.personaluserprofile.get_profile_photo}}" alt="" />
+                        <p class="m-0 text-24">{{user.personaluserprofile.name}} {{user.personaluserprofile.surname}}</p>
+                        <p class="text-muted m-0">@{{user.username}}</p>
+                    </div>
+                </div>
+                <div class="ul-widget-card--line mt-2">
+                  <ul class="nav nav-tabs profile-nav mb-4" id="profileTab" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" id="timeline-tab" data-toggle="tab" href="#timeline" role="tab" aria-controls="timeline" aria-selected="false">Hakkında</a></li>
+                  </ul>
+                  <div class="tab-content ul-tab__content" id="nav-tabContent">
+                    <div class="tab-pane fade active show" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+                      
+                        <div class="row ml-5">
+                            <div class="col-md-4 col-6">
+                                <div class="mb-4">
+                                    <p class="text-primary mb-1"><i class="i-Calendar text-16 mr-1"></i> İsim</p><span>{{user.personaluserprofile.name}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-6">
+                              <div class="mb-4">
+                                <p class="text-primary mb-1"><i class="i-Conference text-16 mr-1"></i> Soyisim</p><span>{{user.personaluserprofile.surname}}</span>
+                              </div>  
+                            </div>
+
+                            <div class="col-md-4 col-6">
+                              <div class="mb-4">
+                                <p class="text-primary mb-1" ><i class="i-MaleFemale text-16 mr-1 "></i> Cinsiyet</p><span style="text-transform:uppercase">{{user.personaluserprofile.sex}}</span>
+                              </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                              <div class="mb-4">
+                                <p class="text-primary mb-1"><i class="i-Sand-watch-2 text-16 mr-1"></i> Yaş</p><span>{{user.personaluserprofile.age}}</span>
+                              </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                              <div class="mb-4">
+                                <p class="text-primary mb-1"><i class="i-Globe text-16 mr-1"></i> Bölge</p><span>Türkiye</span>
+                              </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                              <div class="mb-4">
+                                <p class="text-primary mb-1"><i class="i-ID-Card text-16 mr-1"></i> Kayıt Tarihi</p><span>{{user.date_joined|date:"d.m.Y"}}</span>
+                              </div>
+                            </div>
+                        </div>
+                             
+                    </div>
+                    <div class="separator-breadcrumb border-top"></div>
+                    <span> 
+                      {% if user.personalawardsystem.is_gold == True %}
+                        <i class="i-Memory-Card text-warning"></i>
+                      {% elif user.personalawardsystem.is_silver == True %}
+                        <i class="i-Memory-Card text-danger"></i>
+                      {% elif user.personalawardsystem.is_bronze == True %}
+                        <i class="i-Memory-Card text-primary"></i>
+                      {% endif %}
+
+
+                      {% if user.personalawardsystem.total_comment%}
+                      Toplam
+                      <strong>{{user.personalawardsystem.total_comment}}</strong>
+                      yorumunuz var. Yaptğınız yorumlar sayesinde
+  
+                      {% if user.personalawardsystem.is_gold == True %}
+                      <strong class="text-warning">"Gold"</strong>
+                      {% elif user.personalawardsystem.is_silver == True %}
+                      <strong class="text-danger">"Gümüş"</strong>
+                      {% elif user.personalawardsystem.is_bronze == True %}
+                      <strong class="text-primary"> "Bronz"</strong>
+                      {% endif %}
+                      kullanıcısınız.
+                      
+                      
+                      Pozitif
+                      <strong class="text-success">{{user.personalawardsystem.positive_count}}</strong> adet,
+                      Negatif
+                      <strong class="text-danger">{{user.personalawardsystem.negative_count}}</strong> adet,
+                      Nötr
+                      <strong class="text-warning">{{user.personalawardsystem.notr_count}}</strong> adet
+                      yorumunuz bulunmaktadır.
+
+                      
+                      {% if user.personalawardsystem.positive_count > user.awardsystem.negative_count and user.personalawardsystem.positive_count > user.personalawardsystem.notr_count %}
+                        Yaptığınız yorumlar <strong class="text-success">POZİTİF</strong> ağırlıklıdır.
+                      {% elif user.personalawardsystem.negative_count > user.awardsystem.positive_count and user.personalawardsystem.negative_count > user.personalawardsystem.notr_count %}
+                        Yaptğınız yorumlar <strong class="text-danger">NEGATİF</strong> ağırlıklıdır.
+                      {% elif user.personalawardsystem.notr_count > user.awardsystem.positive_count and user.personalawardsystem.notr_count > user.personalawardsystem.negative_count %}
+                        Yaptığınız Yorumlar <strong class="text-warning">NÖTR</strong> ağırlıklıdır.
+  
+                      {% endif %} 
+  
+                    </span>
+                    {%else%}
+                      <i class="i-Danger text-danger"></i>
+                      Henüz herhangi bir başlığa yorum yapmadınız.
+                    {% endif %}
+                    
+                  </div>
+                </div>
+               
+                
+                
+                <span><i class="i-Recycling-2 text-info mt-3"></i> <strong>Son Giriş:</strong> {{user.last_login|date:"d.m.Y H:i"}}</span> 
+                
+            </div>
+        </div>
+    </div>
+    
+  </div><!-- end of main-content -->
+
+
+
+
+
+
+  <!-- Footer Start -->
+  <div class="flex-grow-1"></div>
+  <div class="app-footer">
+    <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+      <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+      <span class="flex-grow-1"></span>
+      <div class="d-flex align-items-center">
+        <div>
+          <p class="m-0">&copy; 2020 SentX</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- fotter end -->
+</div>
+{% endblock body %}
+
+

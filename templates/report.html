@@ -1,0 +1,325 @@
+{% include "users_layout.html" %}
+
+{% load static %}
+{% block body %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+  
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column"> 
+  <!-- ============ Body content start ============= -->
+  <div class="main-content">
+    <div class="breadcrumb">
+      {% if comments %}
+      <h1 class="mr-2" style="text-transform:uppercase">"{{title.title_name}}"</h1>
+      <a class="btn btn-primary btn-icon btn-sm m-1 ml-4" href="{% url 'title:pdf_download' title.id %}"><i class="i-Download"></i> Dışa Aktar</a>
+    </div>
+    <div class="separator-breadcrumb border-top"></div>
+    <!--Yapılacak işlemler buraya gelecek-->
+    <div class="row"> <!--1.satır-->
+      <div class="col-lg-3 col-md-6 col-sm-6"><!--Toplam Yorum Kutusu-->
+        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+            <div class="card-body text-center"><i class="i-Speach-Bubble-3"></i>
+                <div class="content">
+                    <p class="text-muted  mt-2 mb-0"><strong>Yorum</strong></p>
+                    <p class="lead text-primary text-24 mb-2"><strong><b>{{total_comment}}</b></strong></p>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6"> <!--Pozitif Kutusu-->
+        <div class="card card-icon-bg card-icon-bg-success o-hidden mb-4">
+            <div class="card-body text-center"><i class="i-Happy"></i>
+                <div class="content">
+                    <p class="text-muted mt-2 mb-0"><strong>Pozitif</strong></p>
+                    <p class="lead text-success text-24 mb-2"><strong><b>{{positive}}</b></strong></p>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6"><!--Negatif Kutusu-->
+        <div class="card card-icon-bg card-icon-bg-danger o-hidden mb-4">
+          <div class="card-body text-center"><i class="i-Depression"></i>
+              <div class="content">
+                  <p class="text-muted mt-2 mb-0"><strong>Negatif</strong></p>
+                  <p class="lead text-danger text-24 mb-2"><strong><b>{{negative}}</b></strong></p>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6"><!--Nötr Kutusu-->
+        <div class="card card-icon-bg card-icon-bg-warning o-hidden mb-4">
+          <div class="card-body text-center"><i class="i-Surprise"></i>
+              <div class="content">
+                  <p class="text-muted mt-2 mb-0"><strong>Nötr</strong></p>
+                  <p class="lead text-warning text-24 mb-2"><strong><b>{{notr}}</b></strong></p>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div><!--1.satır sonu-->
+
+    <div class="separator-breadcrumb border-top"></div>
+    <div class="row"><!--2.Satır-->
+      <!--Graf bilgilerini-->
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <!--Grafiklerin 1. si buraya-->
+            <canvas id="myChart"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+              // The type of chart we want to create
+              type: 'bar',
+        
+              // The data for our dataset
+              data: {
+                labels: ['Pozitif', 'Negatif', 'Nötr'],
+                datasets: [{
+                  label: '{{title.title_name}}',
+                  backgroundColor: [
+                    'rgb(76, 175, 80)',
+                    'rgb(244, 67, 54)',
+                    'rgb(255, 193, 7)',
+                  ],
+                  hoverBackgroundColor: [
+                    'rgb(50,205,50)',
+                    'rgb(255,0,0)',
+                    'rgb(255,215,0)',
+                  ],
+                    
+                  data: ['{{positive}}', '{{negative}}', '{{notr}}']
+                }]
+              },
+        
+              // Configuration options go here
+              options: {
+                legend:{
+                  labels:{
+                    fontColor: 'black',
+                    fontSize:14,
+    
+                  }
+                }
+              }
+            });
+            function saveAsPDF() {
+              html2canvas(document.getElementById("myChart"), {
+                onrendered: function(canvas) {
+                  var img = canvas.toDataURL(); //image data of canvas
+                  var doc = new jsPDF();
+                  doc.addImage(img, 30, 40);
+                  doc.save('{{title.title_name}}_BarChart.pdf');
+                }
+              });
+            }
+            </script>
+
+          </div><!--card-body sonu-->
+        </div><!--card mb-4 sonu-->
+      </div><!--card md-6 sonu-->
+
+      <!--2.Graf-->
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <!--Grafiklerin 2. si buraya-->
+            <canvas id="myChartt"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            <script>
+            var ctx = document.getElementById('myChartt').getContext('2d');
+            var chart = new Chart(ctx, {
+              // The type of chart we want to create
+              type: 'pie',
+        
+              // The data for our dataset
+              data: {
+                labels: ['Pozitif', 'Negatif', 'Nötr'],
+                datasets: [{
+                  label: '{{title.title_name}}',
+                  backgroundColor: [
+                    'rgb(76, 175, 80)',
+                    'rgb(244, 67, 54)',
+                    'rgb(255, 193, 7)',
+                  ],
+                  hoverBackgroundColor: [
+                    'rgb(50,205,50)',
+                    'rgb(255,0,0)',
+                    'rgb(255,215,0)',
+                  ],
+                    
+                  data: ['{{positive}}', '{{negative}}', '{{notr}}']
+                }]
+              },
+        
+              // Configuration options go here
+              options: {
+                legend:{
+                  labels:{
+                    fontColor: 'black',
+                    fontSize:14,
+                  }
+                }
+              }
+            });
+            function saveAsPDF2() {
+              html2canvas(document.getElementById("myChartt"), {
+                onrendered: function(canvas) {
+                  var img = canvas.toDataURL(); //image data of canvas
+                  var doc = new jsPDF();
+                  doc.addImage(img, 30, 40);
+                  doc.save('{{title.title_name}}_PieChart.pdf');
+                }
+              });
+            }
+            </script>
+          </div><!--card-body sonu-->
+        </div><!--card mb-4 sonu-->
+      </div><!--card md-6 sonu-->
+    </div><!--2.Satır sonu-->
+    <h4>Yapılan Yorumlar</h4>
+    <div class="separator-breadcrumb border-top mb-3"></div>
+    <div class="row"><!--3.Satır-->
+      <!--Comments-->
+      {% if comments %}
+      {% for comment in comments%} 
+      <div class="col-lg-6 col-md-12 ">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center border-bottom-dotted-dim pb-3 mb-3"><img class="avatar-md rounded mr-3" src="{{comment.comment_author.personaluserprofile.get_profile_photo}}" alt="" />
+                    <div class="flex-grow-1">
+                        <h6 class="m-0">
+                          {% if comment.comment_author.personalawardsystem.is_gold == True %}
+                            <span class="badge-dot-warning"></span>
+                          {% elif comment.comment_author.personalawardsystem.is_silver == True %}
+                            <span class="badge-dot-danger"></span>
+                          {% elif comment.comment_author.personalawardsystem.is_bronze == True %}
+                              <span class="badge-dot-primary"></span>
+                          {% endif %}
+                          <b>{{comment.comment_author}}</b>
+                        </h6>
+                        {% if comment.comment_author.personalawardsystem.is_gold == True %}
+                          <p class="m-0 text-small text-muted">Bu yorumu yapan kullanıcı, Gold Kullanıcı olduğundan yorumu gizlidir.</p>
+                        {% else %}
+                          <p class="m-0 text-small text-muted">{{comment.comment_content|truncatewords:10}}</p>
+                        {% endif %} 
+                    </div>
+
+                        <div>
+                          <p class="m-0 text-small text-muted"> <span class="text-mute">{{comment.comment_date|date:"d.m.Y"}}</span></p>
+                          <p>
+                            {% if comment.comment_author.personalawardsystem.is_gold == True %}
+                              <span class="badge badge-info">-----</span>
+                            {% else %}
+                              {% if comment.sentiment == "Pozitif" %}
+                                <span class="badge badge-success">{{comment.sentiment}}</span>
+                              {% elif comment.sentiment == "Negatif" %}
+                                <span class="badge badge-danger">{{comment.sentiment}}</span>
+                              {% elif comment.sentiment == "Nötr" %}
+                                <span class="badge badge-warning">{{comment.sentiment}}</span>
+                              {% endif %}
+                            {% endif %}
+                          </p>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div><!--3.Satır Sonu-->
+            
+    
+
+
+
+    <div class="row"><!--Yorum olmadığında Gelecek-->
+      {% else %}
+      <div class="col-md-12">
+        <div class="alert alert-card alert-danger text-center" role="alert">
+          <strong class="text-capitalize">Uyarı!</strong> Henüz Bu Başlığa Herhangi Bir Yorum Yapılmamıştır.
+        </div>
+        <!--Pagination-->
+        <div class="pagination justify-content-center">
+          {% if title.comments.has_previous %}
+          <a class="page-link" href="?page={{ comments.previous_page_number}}" >
+            <i>«</i>
+          </a>
+          {% endif %}
+  
+          {% for num in title.comments.paginator.page_range %}
+            {% if comments.number == num %} 
+            <li class="page-item active"><span class="page-link">{{num}}</span></li>
+            {% else%}
+              <a class="page-link" href="?page={{ num }}">{{num}}</a>
+            {% endif %}
+          {% endfor %}
+          {% if title.comments.has_next %}
+            <a class="page-link" href="?page={{ comments.next_page_number}}">
+              <i >»</i>
+            </a>
+          {% endif %}
+        </div>
+        
+      </div>
+      {% endif %}
+      
+      </div>
+      <div class="pagination justify-content-center">
+        {% if comments.has_previous %}
+        <a class="page-link" href="?page={{ comments.previous_page_number}}" >
+          <i>«</i>
+        </a>
+        {% endif %}
+
+        {% for num in comments.paginator.page_range %}
+          {% if comments.number == num %} 
+          <li class="page-item active"><span class="page-link">{{num}}</span></li>
+          {% else%}
+            <a class="page-link" href="?page={{ num }}">{{num}}</a>
+          {% endif %}
+        {% endfor %}
+        {% if comments.has_next %}
+          <a class="page-link" href="?page={{ comments.next_page_number}}">
+            <i >»</i>
+          </a>
+        {% endif %}
+    </div>
+
+
+
+
+  </div><!-- end of main-content -->
+  
+
+
+
+
+
+
+
+
+
+
+  <!-- Footer Start -->
+  <div class="flex-grow-1"></div>
+  <div class="app-footer">
+    <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+      <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+      <span class="flex-grow-1"></span>
+      <div class="d-flex align-items-center">
+        <div>
+          <p class="m-0">&copy; 2020 SentX</p>
+        </div>
+      </div>
+    </div>
+  </div><!-- fotter end -->
+</div><!--main-content-wrap sidenav-open d-flex flex-column end-->
+
+{% endblock body %}

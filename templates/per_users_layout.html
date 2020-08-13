@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="">
+
+{% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SentX | {{request.user.username}}</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet" />
+    <link href="{% static 'css/themes/lite-purple.min.css' %}" rel="stylesheet">
+    <link href = "{% static 'css/plugins/perfect-scrollbar.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/plugins/sweetalert2.min.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/plugins/ladda-themeless.min.css'%}" />
+
+</head>
+
+<body class="text-left">
+  <div class="app-admin-wrap layout-sidebar-large">
+      <div class="main-header">
+          <div class="logo">
+              <img src="{% static 'images/logosentx4.png' %}" alt="">
+          </div>
+          <div class="menu-toggle">
+              <div></div>
+              <div></div>
+              <div></div>
+          </div>
+
+          <div class="d-flex align-items-center">
+              <!-- / Mega menu -->
+              <div class="search-bar">
+                  <input type="text" placeholder="Arama Yap...">
+                  <i class="search-icon text-muted i-Magnifi-Glass1"></i>
+              </div>
+          </div>
+          
+          <div style="margin: auto"></div> <!--Header kısmının  konumu için-->
+          <div class="header-part-right">
+
+              <!-- Full screen toggle -->
+              <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen></i>
+
+              
+                {% if user.personalawardsystem.is_gold == True %}
+                    <i class="i-MaleFemale text-warning"></i>
+                {% elif user.personalawardsystem.is_silver == True %}
+                    <i class="i-MaleFemale text-danger"></i>
+                {% elif user.personalawardsystem.is_bronze == True %}
+                      <i class="i-MaleFemale text-primary"></i>
+                {% endif %}
+
+              <!-- User avatar dropdown -->
+              <div class="dropdown">
+                  <div class="user col align-self-end">
+                      <img src="{{user.personaluserprofile.get_profile_photo}}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                          <div class="dropdown-header">
+                              <i class="i-Lock-User mr-1"></i> {{request.user.username}}
+                          </div>
+                          <a class="dropdown-item" href="{% url 'user:personaluser_account' %}">Hesabım</a>
+                          <a class="dropdown-item" href="/user/logout/">Çıkış Yap</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!--Navbar-->
+      <div class="side-content-wrap">
+          <div class="sidebar-left open rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
+              <ul class="navigation-left">
+                  <li class="nav-item" ><a class="nav-item-hold" href="{% url 'title:per_dashboard'%}"><i class="nav-icon i-Home1"></i><span class="nav-text">Anasayfa</span></a>
+                      <div class="triangle"></div>
+                  </li>
+                  <li class="nav-item"><a class="nav-item-hold" href="{% url 'title:titles'%}"><i class="nav-icon i-Box-Full"></i><span class="nav-text">Başlıklar</span></a>
+                      <div class="triangle"></div>
+                  </li>
+                  <li class="nav-item" ><a class="nav-item-hold" href="{% url 'title:hst_comment'%}"><i class="nav-icon i-Speach-Bubble-3"></i><span class="nav-text">Yorumlarım</span></a>
+                      <div class="triangle"></div>
+                  </li>
+                  <li class="nav-item"><a class="nav-item-hold" href="{% url 'user:personaluser_settings'%}"><i class="nav-icon i-Gears"></i><span class="nav-text">Ayarlar</span></a>
+                      <div class="triangle"></div>
+                  </li>
+              </ul>
+          </div>
+          <div class="sidebar-overlay"></div>
+      </div>
+
+      {% block body%}
+      
+
+      {% endblock body%}
+
+  </div>
+  <!-- ============ Search UI Start ============= -->
+  <div class="search-ui">
+      <div class="search-header">
+          <img src="images/logosentx4.png" alt="" class="logo">
+          <button class="search-close btn btn-icon bg-transparent float-right mt-2">
+              <i class="i-Close-Window text-22 text-muted"></i>
+          </button>
+      </div>
+      <input type="text" placeholder="Type here" class="search-input" autofocus>
+      <div class="search-title">
+          <span class="text-muted">Arama Sonuçları</span>
+      </div>
+      <div class="search-results list-horizontal">
+          <div class="list-item col-md-12 p-0">
+              <div class="card o-hidden flex-row mb-4 d-flex">
+                  <div class="list-thumb d-flex">
+                      <!-- TUMBNAIL -->
+                      <img src="../../dist-assets/images/products/headphone-1.jpg" alt="">
+                  </div>
+                  <div class="flex-grow-1 pl-2 d-flex">
+                      <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center flex-lg-row">
+                          <!-- OTHER DATA -->
+                          <a href="" class="w-40 w-sm-100">
+                              <div class="item-title">Headphone 1</div>
+                          </a>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100">Gadget</p>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100">$300
+                              <del class="text-secondary">$400</del>
+                          </p>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges">
+                              <span class="badge badge-danger">Sale</span>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="list-item col-md-12 p-0">
+              <div class="card o-hidden flex-row mb-4 d-flex">
+                  <div class="list-thumb d-flex">
+                      <!-- TUMBNAIL -->
+                      <img src="../../dist-assets/images/products/headphone-2.jpg" alt="">
+                  </div>
+                  <div class="flex-grow-1 pl-2 d-flex">
+                      <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center flex-lg-row">
+                          <!-- OTHER DATA -->
+                          <a href="" class="w-40 w-sm-100">
+                              <div class="item-title">Headphone 1</div>
+                          </a>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100">Gadget</p>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100">$300
+                              <del class="text-secondary">$400</del>
+                          </p>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges">
+                              <span class="badge badge-primary">New</span>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="list-item col-md-12 p-0">
+              <div class="card o-hidden flex-row mb-4 d-flex">
+                  <div class="list-thumb d-flex">
+                      <!-- TUMBNAIL -->
+                      <img src="../../dist-assets/images/products/headphone-3.jpg" alt="">
+                  </div>
+                  <div class="flex-grow-1 pl-2 d-flex">
+                      <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center flex-lg-row">
+                          <!-- OTHER DATA -->
+                          <a href="" class="w-40 w-sm-100">
+                              <div class="item-title">Headphone 1</div>
+                          </a>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100">Gadget</p>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100">$300
+                              <del class="text-secondary">$400</del>
+                          </p>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges">
+                              <span class="badge badge-primary">New</span>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="list-item col-md-12 p-0">
+              <div class="card o-hidden flex-row mb-4 d-flex">
+                  <div class="list-thumb d-flex">
+                      <!-- TUMBNAIL -->
+                      <img src="../../dist-assets/images/products/headphone-4.jpg" alt="">
+                  </div>
+                  <div class="flex-grow-1 pl-2 d-flex">
+                      <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center flex-lg-row">
+                          <!-- OTHER DATA -->
+                          <a href="" class="w-40 w-sm-100">
+                              <div class="item-title">Headphone 1</div>
+                          </a>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100">Gadget</p>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100">$300
+                              <del class="text-secondary">$400</del>
+                          </p>
+                          <p class="m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges">
+                              <span class="badge badge-primary">New</span>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+  </div>
+    <!-- ============ Search UI End ============= -->
+    <script src="{% static 'js/plugins/jquery-3.3.1.min.js'%}"></script>
+    <script src="{% static 'js/plugins/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'js/plugins/perfect-scrollbar.min.js'%}"></script>
+    <script src="{% static 'js/scripts/script.min.js'%}"></script>
+    <script src="{% static 'js/scripts/sidebar.large.script.min.js'%}"></script>
+    <script src="{% static 'js/plugins/echarts.min.js'%}"></script>
+    <script src="{% static 'js/scripts/echart.options.min.js'%}"></script>
+    <script src="{% static 'js/scripts/dashboard.v1.script.min.js'%}"></script>
+    <script src="{% static 'js/scripts/customizer.script.min.js'%}"></script>
+    <script src="{% static 'js/plugins/sweetalert2.min.js'%}"></script>
+    <script src="{% static 'js/scripts/sweetalert.script.min.js'%}"></script>
+    <script src="{% static 'js/plugins/spin.min.js' %}"></script>
+    <script src="{% static 'js/plugins/ladda.min.js' %}"></script>
+    <script src="{% static 'js/scripts/ladda.script.min.js' %}"></script>
+</body>
+
+</html>

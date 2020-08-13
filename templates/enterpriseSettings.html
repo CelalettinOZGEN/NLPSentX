@@ -1,0 +1,70 @@
+{% include "users_layout.html" %}
+
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body %}
+
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+  <!-- ============ Body content start ============= -->
+  <div class="main-content">
+    <div class="breadcrumb">
+      <h1 class="mr-2">Kullanıcı Profili Ayarları</h1> 
+    </div>
+    <div class="separator-breadcrumb border-top"></div>
+    <div class="col-lg-4 col-xl-12 mt-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="user-profile mb-4">
+                    <div class="ul-widget-card__user-info"><img class="profile-picture avatar-lg mb-2" src="{{user.enterpriseuserprofile.profile_photo.url}}" alt="" />
+                        <p class="m-0 text-24">{{user.username}}</p>
+                        <p class="text-muted m-0">{{user.enterpriseuserprofile.sector}}</p>
+                    </div>
+                </div>
+                
+                <div class="ul-widget-card--line mt-2">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a role="presentation" class="nav-item nav-link active" href="{% url 'user:enterpriseuser_settings'%}">Genel Ayarlar</a>
+                            <a role="presentation" class="nav-item nav-link" href="{% url 'user:enterprisepassword_change'%}">Şifre Değiştir</a>
+                    </nav>
+
+                    
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form | crispy}}
+                        <br>
+                        <button class="btn btn-primary btn-block mb-3" type="submit "><strong>Profil Güncelle</strong></button>
+                    </form>    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  </div><!-- end of main-content -->
+
+
+
+
+
+
+  <!-- Footer Start -->
+  <div class="flex-grow-1"></div>
+  <div class="app-footer">
+    <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+      <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+      <span class="flex-grow-1"></span>
+      <div class="d-flex align-items-center">
+        <div>
+          <p class="m-0">Telif Hakkı &copy; 2020 <strong>SentX</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- fotter end -->
+</div>
+{% endblock body %}
+
+

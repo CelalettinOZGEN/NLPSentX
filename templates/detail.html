@@ -1,0 +1,146 @@
+{% include "per_users_layout.html" %}
+
+{% load static %}
+{% load humanize %}
+{% block body %}
+
+
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+  <!-- ============ Body content start ============= -->
+  <div class="main-content">
+    <div class="breadcrumb">
+      <div class="d-flex w-100 justify-content-between">
+        <h1 class="mr-2"><strong>{{title.title_name}}</strong></h1>
+        <small class="mt-0 text-black"><span class="badge badge-pill badge-primary m-2">{{ title.created_date|date:"d.m.Y" }} Tarihinde Oluşturulmuştur</span></small>
+      </div>
+
+    </div>
+    <div class="separator-breadcrumb border-top"></div>
+    <div class="row">
+      <!-- Post Content Column -->
+      <div class="col-lg-12">
+        
+          <div class="card card-profile-1 mb-4">
+            <div class="card-body text-center">
+                <div class="avatar box-shadow-2 mb-3"><img src="{{title.author.enterpriseuserprofile.profile_photo.url}}" alt="" /></div>
+                <h5 class="m-0"><a href="{% url 'title:detail' title.id %}" class="mt-0"><strong>{{title.title_name}}</strong></a></h5>
+                <p class="m-2" style="text-transform:uppercase">{{title.author.username}}</p>
+          
+                Yapılan Yorum Sayısı: <b>{{total_comment}}</b><br>
+                Yapılacak En Fazla Yorum Sayısı : <b>{{deneme}}</b>
+                {% if total_comment != deneme %}
+                <center>
+                <a href="{% url 'title:detailcomment' title.id %}" class="btn btn-primary btn-block btn-icon-text col-xl-5 mt-4 mb-3"><i class="i-Speach-Bubbles"></i>&nbsp&nbsp&nbsp Yorum Yap</a>
+                </center> 
+                {% else %}
+                <p class="mt-2"><strong class="text-25 text-info">ÜZGÜNÜZ!!! Başlık Yorum Almaya Kapanmıştır.</strong></p>
+                {% endif %}
+            </div>
+          </div>
+
+        <br>
+        <br>
+        <h4>Yapılan Yorumlar</h4>
+        <div class="separator-breadcrumb border-top"></div>
+        <div class="row">
+
+          <!--Comments-->
+          {% if comments %}
+          {% for comment in comments%} 
+          <div class="col-lg-6 col-md-12 ">
+            <div class="card mb-4">
+                <div class="card-body">
+                  {% if comment.comment_author.personalawardsystem.is_gold != True %}
+                    <div class="d-flex align-items-center border-bottom-dotted-dim pb-3 mb-3"><img class="avatar-md rounded mr-3" src="{{comment.comment_author.personaluserprofile.get_profile_photo}}" alt="" />
+                  {% else %}
+                  <div class="d-flex align-items-center border-bottom-dotted-dim pb-3 mb-3"><img class="avatar-md rounded mr-3" src="{% static 'images/logosentx4.png'%}" alt="" />
+                  {% endif %}   
+                      <div class="flex-grow-1">
+                            <h6 class="m-0">
+                              {% if comment.comment_author.personalawardsystem.is_gold == True %}
+                                <span class="badge-dot-warning"></span>
+                              {% elif comment.comment_author.personalawardsystem.is_silver == True %}
+                                <span class="badge-dot-danger"></span>
+                              {% elif comment.comment_author.personalawardsystem.is_bronze == True %}
+                                <span class="badge-dot-primary"></span>
+                              {% endif %}
+                              {% if comment.comment_author.personalawardsystem.is_gold != True %}
+                               <b>{{comment.comment_author}}</b>
+                              {% else %}
+                                <b>*****</b>
+                              {% endif %}
+                              </h6>
+                            
+                            <p class="m-0 text-small text-muted"><span>{{comment.comment_content|truncatewords:10}}</span></p>
+                            
+                        </div>
+                        <div>
+                          
+                          <p class="m-0 text-small text-muted"> <span class="text-mute">{{comment.comment_date|date:"d.m.Y"}}</span></p>
+                          <p>
+                            {% if comment.sentiment == "Pozitif" %}
+                              <span class="badge badge-success">{{comment.sentiment}}</span>
+                            {% elif comment.sentiment == "Negatif" %}
+                              <span class="badge badge-danger">{{comment.sentiment}}</span>
+                            {% elif comment.sentiment == "Nötr" %}
+                              <span class="badge badge-warning">{{comment.sentiment}}</span>
+                            {% endif %}
+                          </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div><!--3.Satır Sonu-->
+        
+
+
+        
+          <!--Pagination-->
+          <div class="pagination justify-content-center">
+            {% if comments.has_previous %}
+            <a class="page-link" href="?page={{ comments.previous_page_number}}" >
+              <i>«</i>
+            </a>
+            {% endif %}
+    
+            {% for num in comments.paginator.page_range %}
+              {% if comments.number == num %} 
+              <li class="page-item active"><span class="page-link">{{num}}</span></li>
+              {% else%}
+                <a class="page-link" href="?page={{ num }}">{{num}}</a>
+              {% endif %}
+            {% endfor %}
+            {% if comments.has_next %}
+              <a class="page-link" href="?page={{ comments.next_page_number}}">
+                <i >»</i>
+              </a>
+            {% endif %}
+          </div>
+      </div>
+    </div>
+    
+    
+
+  </div><!-- end of main-content -->
+        
+  <!-- Footer Start -->
+  <div class="flex-grow-1"></div>
+  <div class="app-footer">
+    <div class="footer-bottom border-top pt-0 d-flex flex-column flex-sm-row align-items-center">
+      <img class="logo" src="{% static 'images/logosentx4.png'%}" alt="">
+      <span class="flex-grow-1"></span>
+      <div class="d-flex align-items-center">
+        <div>
+          <p class="m-0">Telif Hakkı &copy; 2020 <strong>SentX</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- fotter end -->
+</div>
+
+{% endblock body %}
